@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Sender</title>
+    <script>
+        async function sendEmoji() {
+            const userId = document.getElementById('user_id').value;
+            const emojiType = document.getElementById('emoji_type').value;
+            const timestamp = document.getElementById('timestamp').value;
+
+            const response = await fetch('http://localhost:5001/emoji', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId, emoji_type: emojiType, timestamp: timestamp })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert('Error: ' + JSON.stringify(errorData));
+            } else {
+                const result = await response.json();
+                alert(JSON.stringify(result));
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Send Emoji Data</h1>
+    <form onsubmit="event.preventDefault(); sendEmoji();">
+        <label for="user_id">User ID:</label>
+        <input type="text" id="user_id" required><br><br>
+        
+        <label for="emoji_type">Emoji Type:</label>
+        <select id="emoji_type" required>
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <option value="neutral">Neutral</option>
+            <option value="pensive">Pensive</option>
+            <option value="heart">Heart</option>
+        </select><br><br>
+        
+        <label for="timestamp">Timestamp:</label>
+        <input type="datetime-local" id="timestamp" required><br><br>
+        
+        <button type="submit">Send Emoji</button>
+    </form>
+</body>
+</html>

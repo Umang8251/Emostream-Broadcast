@@ -1,0 +1,69 @@
+Step 1: Create Kafka Topics
+Go to directory /usr/local/kafka/bin
+Open another terminal window and create the required Kafka topics:
+
+Create processed_emoji_data Topic:
+
+./kafka-topics.sh --create --topic processed_emoji_data --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+Create aggregated_emoji_data Topic:
+
+./kafka-topics.sh --create --topic aggregated_emoji_data --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+Verify the Topics: To check if the topics have been created successfully, list all topics:
+
+./kafka-topics.sh --list --bootstrap-server localhost:9092
+
+Step 2
+Run cluster publishers
+
+How to Run the Code in Three Terminals:
+
+Terminal 1:
+
+python3 cluster_pub2.py cluster_1
+
+Terminal 2:
+
+python3 cluster_pub2.py cluster_2
+
+Terminal 3:
+
+python3 cluster_pub2.py cluster_3
+
+Step 3:
+Run the Main Publisher:
+
+Execute the main publisher script to start sending messages to the processed_emoji_data topic.
+
+python3 main_pub2.py
+
+Step 4:
+Running the Spark Script:
+
+Once you have this script ready, use the spark-submit command:
+
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.0 spark2.py
+(this has to be run once)
+
+Later we can just run  
+
+python3 spark2.py
+
+Step 5:
+Set Up WebSocket Server
+1. Install Node.js:
+     sudo apt install nodejs npm
+     
+
+2. Install WebSocket Library:
+     npm install ws
+     
+Step 6:
+Start WebSocket Server:
+    node websocket_server.js
+
+Step 7:
+Start WebSocket Clients
+    python3 cluster_subscriber.py
+
